@@ -1,52 +1,121 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
-<meta charset="UTF-8">
-<title>Hotro4k Tool</title>
-
-<link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotro4k Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+    .window { max-width: 520px; margin: auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+    .titlebar { background: linear-gradient(#e0e0e0, #d0d0d0); padding: 12px; font-weight: bold; text-align: center; position: relative; }
+    .buttons { position: absolute; left: 12px; top: 14px; }
+    .buttons span { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 8px; }
+    .red { background: #ff5f56; }
+    .yellow { background: #ffbd2e; }
+    .green { background: #28c940; }
+    .content { padding: 24px; }
+    h2 { margin: 24px 0 12px; color: #222; }
+    input, textarea { width: 100%; padding: 12px; margin: 8px 0 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
+    button { background: #1a73e8; color: white; border: none; padding: 14px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; transition: 0.2s; }
+    button:hover { background: #1557b0; }
+    .divider { height: 1px; background: #ddd; margin: 24px 0; }
+    small, .note { color: #555; font-size: 13px; display: block; margin: -4px 0 16px; }
+    .note { background: #fff8e1; padding: 12px; border-radius: 8px; border: 1px solid #ffe082; }
+  </style>
 </head>
-
 <body>
+  <div class="window">
+    <div class="titlebar">
+      <div class="buttons">
+        <span class="red"></span>
+        <span class="yellow"></span>
+        <span class="green"></span>
+      </div>
+      Hotro4k Tools
+    </div>
+    <div class="content">
+      <h2>Studocu Downloader</h2>
+      <input id="link" placeholder="Dán link Studocu vào đây (ví dụ: https://www.studocu.com/vn/...)" />
+      <button onclick="openStudocu()">Mở tài liệu</button>
+      <small>Nếu bị blur/paywall: Mở F12 → Console → dán code bypass dưới rồi Enter.</small>
 
-<div class="window">
+      <div class="divider"></div>
 
-<div class="titlebar">
+      <h2>Studocu Premium Share (cookie của bạn)</h2>
+      <div class="note">
+        <strong>Cảnh báo 2026:</strong> Share cookie premium dễ bị Studocu detect (nhiều IP/device → logout/ban acc). Chỉ dùng cho 1-2 bạn thân.  
+        Paste **JSON plain** từ F12 → Application → Cookies → https://www.studocu.com → Copy all as JSON.  
+        Chuỗi encrypted (eyJpdi...) không inject trực tiếp được.
+      </div>
+      <textarea id="cookieJson" rows="7" placeholder='[{"name":"laravel_session","value":"your_session_value_here","domain":".studocu.com","path":"/","secure":true,...}, ...]'></textarea>
+      <button onclick="generateBookmarklet()">Tạo Bookmarklet Inject Cookie</button>
+      <small>Gửi code bookmarklet cho bạn bè: Họ mở Studocu → F12 → Console → paste code → Enter → refresh để dùng premium.</small>
 
-<div class="buttons">
-<span class="red"></span>
-<span class="yellow"></span>
-<span class="green"></span>
-</div>
+      <div class="divider"></div>
 
-Hotro4k Tools
+      <h2>Canva Tool</h2>
+      <button onclick="openCanva()">Mở Canva</button>
+    </div>
+  </div>
 
-</div>
+  <script>
+    function openStudocu() {
+      let link = document.getElementById('link').value.trim();
+      if (!link || !link.includes('studocu.com')) {
+        alert('Dán link Studocu hợp lệ nhé!');
+        return;
+      }
+      if (!link.startsWith('http')) link = 'https://' + link;
+      const win = window.open(link, '_blank');
+      if (win) {
+        setTimeout(() => {
+          alert('Nếu bị blur hoặc premium lock:\n1. Nhấn F12 → tab Console\n2. Dán code sau rồi Enter:\n\ndocument.querySelectorAll(".blurred-content, [style*=\'blur\'], .preview-blur, .page-content-blur, .premium-overlay").forEach(el => { el.style.filter = "none !important"; el.style.webkitFilter = "none !important"; el.style.backdropFilter = "none !important"; el.style.userSelect = "text !important"; });\ndocument.querySelectorAll(".paywall-banner, .premium-banner, .upgrade-prompt").forEach(el => el.remove());\ndocument.body.style.overflow = "auto !important";\n\n3. Sau đó Ctrl + P → Save as PDF (chọn No margin).');
+        }, 1800);
+      } else {
+        alert('Cho phép popup để mở tab mới!');
+      }
+    }
 
+    function openCanva() {
+      window.open('https://www.canva.com/', '_blank');
+    }
 
-<div class="content">
+    function generateBookmarklet() {
+      const jsonText = document.getElementById('cookieJson').value.trim();
+      if (!jsonText) return alert('Paste JSON cookie trước đã!');
 
-<h2>Studocu Downloader</h2>
+      let cookies;
+      try {
+        cookies = JSON.parse(jsonText);
+        if (!Array.isArray(cookies)) throw new Error();
+      } catch {
+        alert('JSON sai format! Copy đúng "Copy all as JSON" từ DevTools.');
+        return;
+      }
 
-<input id="link" placeholder="Dán link Studocu vào đây">
+      const targetLink = document.getElementById('link').value.trim() || 'https://www.studocu.com';
 
-<button onclick="openStudocu()">Mở tài liệu</button>
+      const bookmarklet = `(function(){
+        const cks = ${JSON.stringify(cookies)};
+        cks.forEach(c => {
+          if (c.domain && c.domain.includes('studocu')) {
+            let str = \`\${c.name}=\${c.value}; path=/; domain=\${c.domain};\`;
+            if (c.expires) str += \`expires=\${new Date(c.expires*1000).toUTCString()};\`;
+            if (c.secure) str += ' secure;';
+            if (c.sameSite) str += \` samesite=\${c.sameSite};\`;
+            document.cookie = str;
+          }
+        });
+        alert('Cookie premium injected! Refresh trang để dùng full.');
+        window.location = '${targetLink}';
+      })();`;
 
+      const fullBm = 'javascript:' + encodeURIComponent(bookmarklet);
+      prompt('Copy toàn bộ dòng này (Ctrl+C) rồi paste vào Console tab Studocu (F12):', fullBm);
 
-<div class="divider"></div>
-
-<h2>Canva Tool</h2>
-
-<button onclick="openCanva()">Mở Canva</button>
-
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
+      alert('Hướng dẫn bạn bè:\n1. Mở link Studocu.\n2. F12 → Console.\n3. Paste code → Enter.\n4. Refresh trang.');
+    }
+  </script>
 </body>
 </html>
