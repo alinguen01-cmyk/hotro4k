@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+</head>
+
+<body>
+
+<h2>Danh sách yêu cầu</h2>
+
+<table border="1">
+
+<thead>
+<tr>
+<th>Tên</th>
+<th>Facebook</th>
+<th>Dịch vụ</th>
+</tr>
+</thead>
+
+<tbody id="data"></tbody>
+
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+async function loadData(){
+
+let { data, error } = await supabaseClient
+.from("downloads")
+.select("*")
+
+let html = ""
+
+data.forEach(item=>{
+
+html += `
+<tr>
+<td>${item.name}</td>
+<td>${item.facebook}</td>
+<td>${item.service}</td>
+</tr>
+`
+
+})
+
+document.getElementById("data").innerHTML = html
+
+}
+
+loadData()
+
+</script>
+
+</body>
+</html>
