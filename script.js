@@ -1,24 +1,38 @@
-function openStudocu(){
+async function sendRequest(){
 
-let link = document.getElementById("link").value
+let name = document.getElementById("name").value
+let facebook = document.getElementById("facebook").value
+let service = document.getElementById("service").value
 
-if(link === ""){
-alert("Vui lòng dán link Studocu")
+if(name === "" || facebook === ""){
+alert("Vui lòng nhập đầy đủ thông tin")
 return
 }
 
-window.open(link,"_blank")
+let { data, error } = await supabaseClient
+.from("downloads")
+.insert([
+{
+name: name,
+facebook: facebook,
+service: service
+}
+])
+
+if(error){
+alert("Gửi thất bại")
+console.log(error)
+}else{
+alert("Yêu cầu đã được gửi")
+}
 
 }
 
-function openCanva(){
+function openMessenger(){
 
-window.open("https://www.canva.com/","_blank")
-
-}
-
-function openFanpage(){
-
-window.open("https://www.facebook.com/profile.php?id=61582234003016&locale=vi_VN","_blank")
+window.open(
+"https://m.me/61582234003016",
+"_blank"
+)
 
 }
