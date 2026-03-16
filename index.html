@@ -30,16 +30,16 @@ Hotro4k Tools
 
 <h2>Studocu & Canva Edu</h2>
 
-<p>Vui lòng để lại thông tin để được hỗ trợ</p>
+<p>Vui lòng nhập thông tin để được hỗ trợ</p>
 
 <input id="name" placeholder="Tên của bạn">
-
-<input id="facebook" placeholder="Link Facebook">
 
 <select id="service">
 <option value="studocu">Studocu</option>
 <option value="canva">Canva Edu</option>
 </select>
+
+<input id="studocu_link" placeholder="Dán link Studocu cần tải">
 
 <button onclick="sendRequest()">Gửi yêu cầu</button>
 
@@ -60,10 +60,38 @@ Hotro4k Tools
 </a>
 
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="supabase.js"></script>
-<script src="script.js"></script>
+
+<script>
+
+async function sendRequest(){
+
+let name=document.getElementById("name").value
+let service=document.getElementById("service").value
+let studocu=document.getElementById("studocu_link").value
+
+await supabaseClient
+.from("downloads")
+.insert([
+{
+name:name,
+service:service,
+studocu_link:studocu
+}
+])
+
+alert("Đã gửi yêu cầu thành công!")
+
+}
+
+function openMessenger(){
+
+window.open("https://m.me/61582234003016")
+
+}
+
+</script>
 
 </body>
 </html>
