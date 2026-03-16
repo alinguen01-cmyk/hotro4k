@@ -1,9 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Hotro4k Tools</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="window">
+
+<div class="titlebar">
+
+<div class="buttons">
+<span class="red"></span>
+<span class="yellow"></span>
+<span class="green"></span>
+</div>
+
+Hotro4k Tools
+
+</div>
+
 <div class="content">
 
 <h2>Studocu & Canva Edu</h2>
 
-<p>Vui lòng liên hệ để được hỗ trợ</p>
+<p>Vui lòng để lại thông tin để được hỗ trợ</p>
+
+<input id="name" placeholder="Tên của bạn">
+
+<input id="facebook" placeholder="Link Facebook">
+
+<select id="service">
+<option value="studocu">Studocu</option>
+<option value="canva">Canva Edu</option>
+</select>
+
+<button onclick="sendRequest()">Gửi yêu cầu</button>
+
+<hr>
 
 <button onclick="openMessenger()">Nhắn tin Fanpage</button>
 
 </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="supabase.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
